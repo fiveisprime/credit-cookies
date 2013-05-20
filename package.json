@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "Example API for managing movies with credit cookies.",
   "main": "app.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node app.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/fiveisprime/credit-cookies"

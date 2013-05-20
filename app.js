@@ -3,11 +3,19 @@ var express = require('express')
 
 var app = express();
 
+// Express middleware
+// ==================
 app.use(express.bodyParser());
 
+// Mongo/Mongoose configuration
+// ============================
 var db = mongoose.connection, movieSchema, Movie;
 
+// Output any mongo connection errors to the console.
 db.on('error', console.error);
+
+// Create the movie schema and movie once the connection
+// to mongo is made.
 db.once('open', function() {
   movieSchema = new mongoose.Schema({
     title: { type: String }
@@ -19,23 +27,30 @@ db.once('open', function() {
   Movie = mongoose.model('Movie', movieSchema);
 });
 
+// Connect to the local mongo instance on the test database.
 mongoose.connect('localhost', 'test');
 
+
+// Routes
+// ======
 app.get('/', function(req, res) {
+  res.statusCode = 301;
   res.redirect('/movies');
 });
 
 app.get('/movies', function(req, res) {
   if (typeof req.query.creditcookie === 'undefined') {
+    // Return a list of all movies.
     Movie.find(function(err, movies) {
       if (err) {
         res.statusCode = 500;
-        return res.send('failed to get movies :(');
+        return res.json(err);
       }
 
       res.json(movies);
     });
   } else {
+    // Return only movies with the specified parameter.
     Movie.find({ hasCreditCookie: req.query.creditcookie }, function(err, movies) {
       if (err) {
         res.statusCode = 500;
@@ -48,10 +63,22 @@ app.get('/movies', function(req, res) {
   }
 });
 
+app.get('/movie/:id', function(req, res) {
+  Movie.findOne({ '_id': req.params.id }, function(err, movie) {
+    if (err) {
+      res.statusCode = 500;
+      return res.json(err);
+    }
+
+    res.statusCode = 200;
+    res.json(movie);
+  })
+});
+
 app.post('/movie/add', function(req, res) {
   if (!req.body) {
-    res.statusCode = 204;
-    return res.json({ error: 'no content found' });
+    res.statusCode = 400;
+    return res.json({ error: 'no body content provided' });
   }
 
   var movie = new Movie(req.body);
@@ -66,21 +93,8 @@ app.post('/movie/add', function(req, res) {
   });
 });
 
-app.get('/movie/:id', function(req, res) {
-  Movie.findOne({ '_id': req.params.id }, function(err, movie) {
-    res.statusCode = 200;
-    res.json(movie);
-  })
-});
-
 app.delete('/movie/:id', function(req, res) {
-  if (!req.params.id) {
-    res.statusCode = 204;
-    return res.json({ error: 'no content found' });
-  }
-
   Movie.remove({ '_id': req.params.id }, function(err) {
-    console.dir(err);
     res.statusCode = 200;
     res.json({ message: 'deleted' });
   });
