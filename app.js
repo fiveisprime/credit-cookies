@@ -59,7 +59,7 @@ app.get('/movies', function(req, res) {
 
       res.statusCode = 200;
       res.json(movies);
-    })
+    });
   }
 });
 
@@ -72,7 +72,7 @@ app.get('/movie/:id', function(req, res) {
 
     res.statusCode = 200;
     res.json(movie);
-  })
+  });
 });
 
 app.post('/movie/add', function(req, res) {
