@@ -34,8 +34,7 @@ mongoose.connect('localhost', 'test');
 // Routes
 // ======
 app.get('/', function(req, res) {
-  res.statusCode = 301;
-  res.redirect('/movies');
+  // Render a UI here.
 });
 
 app.get('/movies', function(req, res) {
