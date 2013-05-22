@@ -1,8 +1,10 @@
 var express = require('express')
   , hbs = require('hbs')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , config = require('./config');
 
 var app = express();
+var env = process.env.NODE_ENV || 'development';
 
 // Express middleware
 // ==================
@@ -32,7 +34,7 @@ db.once('open', function() {
 });
 
 // Connect to the local mongo instance on the test database.
-mongoose.connect('localhost', 'test');
+mongoose.connect(config[env].connection);
 
 
 // Routes
