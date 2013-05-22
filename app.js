@@ -1,4 +1,5 @@
 var express = require('express')
+  , hbs = require('hbs')
   , mongoose = require('mongoose');
 
 var app = express();
@@ -6,6 +7,9 @@ var app = express();
 // Express middleware
 // ==================
 app.use(express.bodyParser());
+app.use(express.static(__dirname + '/public'));
+
+app.set('view engine', 'hbs');
 
 // Mongo/Mongoose configuration
 // ============================
@@ -34,7 +38,7 @@ mongoose.connect('localhost', 'test');
 // Routes
 // ======
 app.get('/', function(req, res) {
-  // Render a UI here.
+  res.render('index');
 });
 
 app.get('/movies', function(req, res) {
