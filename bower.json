@@ -1,0 +1,14 @@
+{
+  "name": "credit-cookies",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "~2.0.1",
+    "underscore": "~1.4.4",
+    "backbone": "~1.0.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}

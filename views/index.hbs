@@ -1,1 +1,10 @@
-<p>Build your app here.</p>
+<script id="movie" type="text/underscore">
+  <% if (hasCreditCookie) { %>
+  <div class="movie cookie">
+  <% } else { %>
+  <div class="movie">
+  <% } %>
+    <h3><%-title%></h3>
+    <small><%-rating%> - <%-releaseYear%></small>
+  </div>
+</script>
