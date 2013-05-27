@@ -21,11 +21,13 @@ var AppView = Backbone.View.extend({
     this.render();
   }
 , render: function() {
+    this.model.fetch({ success: _.bind(this.renderChildren, this) });
+    return this;
+  }
+, renderChildren: function() {
     var _this = this;
-    this.model.fetch().complete(function() {
-      _.each(_this.model.models, function(movie) {
-        $(_this.el).append(new MovieView({ model: movie }).render());
-      });
+    _.each(this.model.models, function(movie) {
+      _this.$el.append(new MovieView({ model: movie }).render());
     });
     return this;
   }
