@@ -25,10 +25,9 @@ var AppView = Backbone.View.extend({
     return this;
   }
 , renderChildren: function() {
-    var _this = this;
     _.each(this.model.models, function(movie) {
-      _this.$el.append(new MovieView({ model: movie }).render());
-    });
+      this.$el.append(new MovieView({ model: movie }).render());
+    }, this);
     return this;
   }
 , addMovie: function(e) {
